@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.21.0 ()
+  labels:
+    io.kompose.service: cloud-datastore
+  name: cloud-datastore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cloud-datastore
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.21.0 ()
+      labels:
+        io.kompose.service: cloud-datastore
+    spec:
+      containers:
+        - args:
+            - gcloud
+            - beta
+            - emulators
+            - datastore
+            - start
+            - --host-port=0.0.0.0:8432
+            - --no-store-on-disk
+          env:
+            - name: CLOUDSDK_CORE_PROJECT
+              value: gdg-devparty
+          image: google/cloud-sdk:latest
+          imagePullPolicy: ""
+          name: cloud-datastore
+          ports:
+            - containerPort: 8432
+          resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""

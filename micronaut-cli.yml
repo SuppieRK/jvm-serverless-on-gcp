@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: gdg.devparty.serverless
+testFramework: junit
+sourceLanguage: kotlin
+buildTool: gradle
+features: [annotation-api, app-name, data, data-jpa, docker, file-watch, graalvm, gradle, h2, http-client, jdbc-hikari, junit, kotlin, kotlin-application, logback, netty-server, readme, shade, spring, spring-data-jpa, yaml]

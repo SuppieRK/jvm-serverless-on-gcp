@@ -1,0 +1,9 @@
+micronaut:
+  server:
+    port: ${PORT:8080}
+  application:
+    name: demo
+datasources:
+  gcp:
+    emulator:
+      enabled: true

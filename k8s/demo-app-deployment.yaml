@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.21.0 ()
+  labels:
+    io.kompose.service: demo-app
+  name: demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: demo-app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.21.0 ()
+      labels:
+        io.kompose.service: demo-app
+    spec:
+      containers:
+        - env:
+            - name: DATASTORE_EMULATOR_HOST
+              value: http://cloud-datastore:8432
+            - name: GOOGLE_CLOUD_PROJECT
+              value: gdg-devparty
+            - name: MICRONAUT_ENVIRONMENTS
+              value: dev
+          image: gdg/demo-app
+          imagePullPolicy: ""
+          name: demo-app
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      initContainers:
+        - name: cloud-datastore-ping
+          image: busybox:1.28
+          command: ["sh", "-c", "until nslookup cloud-datastore; do echo waiting for cloud-datastore; sleep 5; done;"]

@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+metadata:
+  name: gdg-demo-app
+build:
+  artifacts:
+    - image: gdg/demo-app
+      # Uncomment lines below to use Google JIB plugin
+      context: .
+      jib: {}
+# Uncomment line below to use custom Dockerfile for Graal
+#  local: {}
+deploy:
+  kubectl:
