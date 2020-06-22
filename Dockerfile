@@ -26,6 +26,7 @@ RUN gradle assemble --no-daemon -S
 # GraalVM build
 FROM graalvm-local-native-image-builder AS graalvm-local-builder
 COPY --from=gradle-local-build /home/app/build/libs/*-all.jar /home/app/
+COPY /src/main/resources/google-datastore-reflect-config.json /home/app/google-datastore-reflect-config.json
 WORKDIR /home/app
 RUN native-image -J-Xmx10G -J-Xms6G --no-server --no-fallback --verbose -cp *-all.jar
 
