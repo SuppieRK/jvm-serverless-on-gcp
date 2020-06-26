@@ -19,3 +19,21 @@ This demo is a part of my talk at [GDG DevParty 2020](https://gdg-devparty.ru/)
 You can use either UI or [instructions from guide](https://cloud.google.com/run/docs/deploying)
 
 ### After work - do not forget to clean up resources
+
+## Useful commands
+
+#### Clean up Docker resources
+
+`docker rm -f $(docker ps -aq) && docker system prune -a -f --volumes`
+
+#### Build Docker image using JIB without GraalVM
+
+`export PROJECT_ID=$(gcloud config get-value project) && chmod +x ./gradlew && time ./gradlew jibDockerBuild --image=gcr.io/$PROJECT_ID/demo-app:jib`
+
+#### Build Docker image using Docker daemon with GraalVM
+
+`export PROJECT_ID=$(gcloud config get-value project) && time docker build . -t gcr.io/$PROJECT_ID/demo-app:graal`
+
+#### Compare images locally using [container-diff](https://github.com/GoogleContainerTools/container-diff)
+
+`export PROJECT_ID=$(gcloud config get-value project) && container-diff diff daemon://gcr.io/$PROJECT_ID/demo-app:jib daemon://gcr.io/$PROJECT_ID/demo-app:graal --type=size --type=history`
